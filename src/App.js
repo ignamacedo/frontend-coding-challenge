@@ -1,7 +1,19 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { Service } from './Service';
+import Tenant from './componets/tenant';
 
 function App() {
+
+  const [tenants,setTenants] = useState([]);
+
+  useEffect(()=>{
+    Service.getTenants().then((param) => {
+      setTenants(param);
+    }).catch((error) => {
+      console.log("Error: "+error);
+    })
+  },[]);
 
   return (
       <>
@@ -29,15 +41,12 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>1</th>
-                <td>Mark Otto</td>
-                <td>CURRENT</td>
-                <td>12/31/2020</td>
-                <td>
-                  <button className="btn btn-danger">Delete</button>
-                </td>
-              </tr>
+              {
+                (tenants.length === 0)? 'LOADING...': 
+                tenants.map( (item, i) => {
+                  return <Tenant key={item.id} item={item} index={i} />
+                })
+              }
             </tbody>
           </table>
         </div>
