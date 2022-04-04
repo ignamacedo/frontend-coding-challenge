@@ -9,8 +9,9 @@ function App() {
 
   const [tenants,setTenants] = useState([]);
   const [copyTenants,setCopyTenants] = useState([]);
-  const [disabledBtnAddTenant,setDisabledBtnAddTenant] = useState(false);
+  const [disabledBtnAddTenant,setDisabledBtnAddTenant] = useState(true);
   const [messageValidateName,setMessageValidateName] = useState('');
+  const [messageValidateLeaseEndDate,setMessageValidateLeaseEndDate] = useState('');
 
   useEffect(()=>{
     Service.getTenants().then((param) => {
@@ -105,6 +106,33 @@ function App() {
     setCopyTenants([...sorted]);
   }
 
+  function validateLeaseEndDate(e){
+     if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(e.target.value)){
+      if(e.target.value.length === 0){
+        setDisabledBtnAddTenant(false);
+        setMessageValidateLeaseEndDate('');
+      }else{
+        setDisabledBtnAddTenant(true);
+        setMessageValidateLeaseEndDate('Enter the date in MM/DD/YYYY format');
+      }
+    }else{
+      let date = e.target.value.split("/");
+      let today = new Date();
+      if((date[0] >= 1 && date[0] <= 31) && (date[1] >= 1 && date[1] <= 12) && (date[2] >= 1990 && date[0] <= 2050)){
+        if(today.getTime() < new Date(e.target.value).getTime()){
+          setDisabledBtnAddTenant(false);
+          setMessageValidateLeaseEndDate('');
+        }else{
+          setDisabledBtnAddTenant(true);
+          setMessageValidateLeaseEndDate('The date must be higher than today');
+        }
+      }else{
+        setDisabledBtnAddTenant(true);
+        setMessageValidateLeaseEndDate('Incorrect date');
+      }
+    }
+  }
+
   return (
       <>
         <div className="container">
@@ -113,7 +141,7 @@ function App() {
           <Table copyTenants={copyTenants} onByName={sortByName} onPaymentStatus={sortByPaymentStatus} onByLeaseEnDate={sortByLeaseEnDate}/>
         </div>
         
-        <AddTenant onValidateName={validateTenantName} disabledBtnAddTenant={disabledBtnAddTenant} messageValidateName={messageValidateName} />
+        <AddTenant onValidateName={validateTenantName} onValidateLeaseEndDate={validateLeaseEndDate} disabledBtnAddTenant={disabledBtnAddTenant} messageValidateName={messageValidateName} messageValidateLeaseEndDate={messageValidateLeaseEndDate} />
         
         
       </>

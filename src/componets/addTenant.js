@@ -1,9 +1,13 @@
 import React from 'react';
 
-export default function AddTenant({onValidateName, disabledBtnAddTenant, messageValidateName}){
+export default function AddTenant({onValidateName, disabledBtnAddTenant, messageValidateName, onValidateLeaseEndDate, messageValidateLeaseEndDate}){
 
     function validateName(e){
         onValidateName(e);
+    }
+
+    function validateLeaseEndDate(e){
+        onValidateLeaseEndDate(e);
     }
 
   return(
@@ -28,7 +32,8 @@ export default function AddTenant({onValidateName, disabledBtnAddTenant, message
                 </div>
                 <div className="form-group">
                 <label>Lease End Date</label>
-                <input className="form-control"/>
+                <input className="form-control" onChange={ (e) => validateLeaseEndDate(e)} placeholder="MM/DD/YYYY"/>
+                <p>{messageValidateLeaseEndDate}</p>
                 </div>
                 <button className="btn btn-primary">Save</button>
                 <button className="btn">Cancel</button>
