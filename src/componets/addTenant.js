@@ -21,7 +21,7 @@ export default function AddTenant({onValidateName, disabledBtnAddTenant, message
                 <div className="form-group">
                 <label>Name</label>
                 <input className="form-control" onChange={ (e) => validateName(e)}/>
-                <p>{messageValidateName}</p>
+                <p className="alert alert-waring" role="alert">{messageValidateName}</p>
                 </div>
                 <div className="form-group">
                 <label>Payment Status</label>
@@ -33,7 +33,7 @@ export default function AddTenant({onValidateName, disabledBtnAddTenant, message
                 <div className="form-group">
                 <label>Lease End Date</label>
                 <input className="form-control" onChange={ (e) => validateLeaseEndDate(e)} placeholder="MM/DD/YYYY"/>
-                <p>{messageValidateLeaseEndDate}</p>
+                <p className="alert alert-waring" role="alert">{messageValidateLeaseEndDate}</p>
                 </div>
                 <button className="btn btn-primary">Save</button>
                 <button className="btn">Cancel</button>

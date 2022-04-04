@@ -135,7 +135,7 @@ function App() {
     }else{
       let date = e.target.value.split("/");
       let today = new Date();
-      if((date[0] >= 1 && date[0] <= 31) && (date[1] >= 1 && date[1] <= 12) && (date[2] >= 1990 && date[0] <= 2050)){
+      if((date[0] >= 1 && date[0] <= 12) && (date[1] >= 1 && date[1] <= 31) && (date[2] >= 1990 && date[0] <= 2050)){
         if(today.getTime() < new Date(e.target.value).getTime()){
           setDisabledBtnAddTenant(false);
           setMessageValidateLeaseEndDate('');
