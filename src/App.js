@@ -55,6 +55,23 @@ function App() {
     }
   }
 
+  function sortById(){
+    let tnts = [...tenants];
+    let sorted = tnts.sort((a, b) =>{
+      var idA = a.id;
+      var idB = b.id;
+      if (idA < idB) {
+        return -1;
+      }
+      if (idA > idB) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setCopyTenants([...sorted]);
+  }
+
   function sortByName(){
     let tnts = [...tenants];
     let sorted = tnts.sort((a, b) =>{
@@ -75,12 +92,12 @@ function App() {
   function sortByPaymentStatus(){
     let tnts = [...tenants];
     let sorted = tnts.sort((a, b) =>{
-      var nameA = a.paymentStatus;
-      var nameB = b.paymentStatus;
-      if (nameA < nameB) {
+      var statusA = a.paymentStatus;
+      var statusB = b.paymentStatus;
+      if (statusA < statusB) {
         return -1;
       }
-      if (nameA > nameB) {
+      if (statusA > statusB) {
         return 1;
       }
       return 0;
@@ -138,7 +155,7 @@ function App() {
         <div className="container">
           <h1>Tenants</h1>
           <NavBar onAllTenants={handleAllTenants} onPaymentLate={handlePaymentLate} onLeaseEndsLessAMonth={handleLeaseEndsLessAMonth}/>
-          <Table copyTenants={copyTenants} onByName={sortByName} onPaymentStatus={sortByPaymentStatus} onByLeaseEnDate={sortByLeaseEnDate}/>
+          <Table copyTenants={copyTenants} onById={sortById} onByName={sortByName} onPaymentStatus={sortByPaymentStatus} onByLeaseEnDate={sortByLeaseEnDate}/>
         </div>
         
         <AddTenant onValidateName={validateTenantName} onValidateLeaseEndDate={validateLeaseEndDate} disabledBtnAddTenant={disabledBtnAddTenant} messageValidateName={messageValidateName} messageValidateLeaseEndDate={messageValidateLeaseEndDate} />
