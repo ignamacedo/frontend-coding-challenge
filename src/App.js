@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Service } from './Service';
 import NavBar from './componets/navBar';
 import Table from './componets/table';
+import AddTenant from './componets/addTenant';
 
 function App() {
 
@@ -49,8 +50,59 @@ function App() {
       setMessageValidateName('');
     }else{
       setDisabledBtnAddTenant(true);
-      setMessageValidateName('The name is too long');
+      setMessageValidateName('The name entered is too long');
     }
+  }
+
+  function sortByName(){
+    let tnts = [...tenants];
+    let sorted = tnts.sort((a, b) =>{
+      var nameA = a.name;
+      var nameB = b.name;
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setCopyTenants([...sorted]);
+  }
+
+  function sortByPaymentStatus(){
+    let tnts = [...tenants];
+    let sorted = tnts.sort((a, b) =>{
+      var nameA = a.paymentStatus;
+      var nameB = b.paymentStatus;
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setCopyTenants([...sorted]);
+  }
+
+  function sortByLeaseEnDate(){
+    let tnts = [...tenants];
+    let sorted = tnts.sort((a, b) =>{
+      var dateA = a.leaseEndDate;
+      var dateB = b.leaseEndDate;
+      if (dateA < dateB) {
+        return -1;
+      }
+      if (dateA > dateB) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setCopyTenants([...sorted]);
   }
 
   return (
@@ -58,35 +110,12 @@ function App() {
         <div className="container">
           <h1>Tenants</h1>
           <NavBar onAllTenants={handleAllTenants} onPaymentLate={handlePaymentLate} onLeaseEndsLessAMonth={handleLeaseEndsLessAMonth}/>
-          <Table copyTenants={copyTenants}/>
+          <Table copyTenants={copyTenants} onByName={sortByName} onPaymentStatus={sortByPaymentStatus} onByLeaseEnDate={sortByLeaseEnDate}/>
         </div>
         
-        <div className="container">
-          <button className="btn btn-secondary" disabled={disabledBtnAddTenant}>Add Tenant</button>
-        </div>
+        <AddTenant onValidateName={validateTenantName} disabledBtnAddTenant={disabledBtnAddTenant} messageValidateName={messageValidateName} />
         
-        <div className="container">
-          <form>
-            <div className="form-group">
-              <label>Name</label>
-              <input className="form-control" onChange={ (e) => validateTenantName(e)}/>
-              <p>{messageValidateName}</p>
-            </div>
-            <div className="form-group">
-              <label>Payment Status</label>
-              <select className="form-control">
-                <option>CURRENT</option>
-                <option>LATE</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label>Lease End Date</label>
-              <input className="form-control"/>
-            </div>
-            <button className="btn btn-primary">Save</button>
-            <button className="btn">Cancel</button>
-          </form>
-        </div>
+        
       </>
   );
 }

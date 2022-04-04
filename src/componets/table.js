@@ -1,17 +1,29 @@
 import React from 'react';
 import Tenant from './tenant';
 
-export default function Table({copyTenants}){
+export default function Table({copyTenants, onByName, onPaymentStatus, onByLeaseEnDate}){
 
+  function sortByName(){
+    onByName();
+  }
+
+  function sortByPaymentStatus(){
+    onPaymentStatus();
+  }
+
+  function sortByLeaseEnDate(){
+    onByLeaseEnDate();
+  }
+  
   return(
         <>
           <table className="table">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Payment Status</th>
-                <th>Lease End Date</th>
+                <th onClick={sortByName}>Name</th>
+                <th onClick={sortByPaymentStatus}>Payment Status</th>
+                <th onClick={sortByLeaseEnDate}>Lease End Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
