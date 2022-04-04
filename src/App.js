@@ -8,6 +8,8 @@ function App() {
 
   const [tenants,setTenants] = useState([]);
   const [copyTenants,setCopyTenants] = useState([]);
+  const [disabledBtnAddTenant,setDisabledBtnAddTenant] = useState(false);
+  const [messageValidateName,setMessageValidateName] = useState('');
 
   useEffect(()=>{
     Service.getTenants().then((param) => {
@@ -41,6 +43,16 @@ function App() {
     setCopyTenants([...leaseEnds]);
   }
 
+  function validateTenantName(e){
+    if(e.target.value.length <= 25){
+      setDisabledBtnAddTenant(false);
+      setMessageValidateName('');
+    }else{
+      setDisabledBtnAddTenant(true);
+      setMessageValidateName('The name is too long');
+    }
+  }
+
   return (
       <>
         <div className="container">
@@ -50,14 +62,15 @@ function App() {
         </div>
         
         <div className="container">
-          <button className="btn btn-secondary">Add Tenant</button>
+          <button className="btn btn-secondary" disabled={disabledBtnAddTenant}>Add Tenant</button>
         </div>
         
         <div className="container">
           <form>
             <div className="form-group">
               <label>Name</label>
-              <input className="form-control"/>
+              <input className="form-control" onChange={ (e) => validateTenantName(e)}/>
+              <p>{messageValidateName}</p>
             </div>
             <div className="form-group">
               <label>Payment Status</label>
