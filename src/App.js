@@ -1,58 +1,58 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Service } from './Service';
-import Tenant from './componets/tenant';
+import NavBar from './componets/navBar';
+import Table from './componets/table';
 
 function App() {
 
   const [tenants,setTenants] = useState([]);
+  const [copyTenants,setCopyTenants] = useState([]);
 
   useEffect(()=>{
     Service.getTenants().then((param) => {
       setTenants(param);
+      setCopyTenants(param);
     }).catch((error) => {
       console.log("Error: "+error);
     })
   },[]);
 
+  function handleAllTenants(){
+    setCopyTenants([...tenants]);
+  }
+
+  function handlePaymentLate(){
+    let tnts = [...tenants];
+    let paymentLate = tnts.filter(x => x.paymentStatus === 'LATE');
+
+    setCopyTenants([...paymentLate]);
+  }
+
+  function handleLeaseEndsLessAMonth(){
+    let tnts = [...tenants];
+    let today = new Date();
+    let leaseEnds = tnts.filter(x => new Date(x.leaseEndDate) >= today);
+   
+    leaseEnds = leaseEnds.filter( 
+      x => ((new Date(x.leaseEndDate).getTime() - today.getTime())/(1000*60*60*24)) <= 30
+      );
+    
+    setCopyTenants([...leaseEnds]);
+  }
+
   return (
       <>
         <div className="container">
           <h1>Tenants</h1>
-          <ul className="nav nav-tabs">
-            <li className="nav-item">
-              <a className="nav-link active" href="#">All</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Payment is late</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Lease ends in less than a month</a>
-            </li>
-          </ul>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Payment Status</th>
-                <th>Lease End Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                (tenants.length === 0)? 'LOADING...': 
-                tenants.map( (item, i) => {
-                  return <Tenant key={item.id} item={item} index={i} />
-                })
-              }
-            </tbody>
-          </table>
+          <NavBar onAllTenants={handleAllTenants} onPaymentLate={handlePaymentLate} onLeaseEndsLessAMonth={handleLeaseEndsLessAMonth}/>
+          <Table copyTenants={copyTenants}/>
         </div>
+        
         <div className="container">
           <button className="btn btn-secondary">Add Tenant</button>
         </div>
+        
         <div className="container">
           <form>
             <div className="form-group">

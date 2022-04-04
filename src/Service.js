@@ -2,9 +2,12 @@ const networkError = () => Math.floor(Math.random() * Math.floor(5)) === 0;
 
 const randomResponseTime = () => Math.floor(Math.random() * Math.floor(1000));
 
+//i change start and end date with values of this year to test the function lease ends in less than a month
 function randomDate() {
-  const start = 1609459200000;
-  const end = 1640995199000;
+  //const start = 1609459200000;
+  const start = 1640995200000;
+  //const end = 1640995199000;
+  const end = 1672531199000;
   const date = new Date(+start + Math.random() * (end - start));
   date.setHours(0);
   return date.toISOString();
